@@ -1,1 +1,1 @@
-"""Prompt Playground package."""
+"""Prompt Playground core package."""
