@@ -1,3 +1,9 @@
 # Prompt Playground
 
-WIP sandbox for prompt testing.
+Streamlit sandbox for prompt testing.
+
+## Setup
+
+```bash
+pip install -r requirements.txt
+```
