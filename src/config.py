@@ -1,5 +1,7 @@
-"""Environment settings."""
+"""Environment and default settings for Prompt Playground."""
+from __future__ import annotations
 import os
+from dataclasses import dataclass
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -13,3 +15,13 @@ DEFAULT_OLLAMA_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 DEFAULT_TEMPERATURE = 0.7
 DEFAULT_MAX_TOKENS = 1024
 OPENAI_MODELS = ["gpt-4o-mini", "gpt-4o", "gpt-4.1-mini", "gpt-4.1", "o4-mini"]
+
+@dataclass(frozen=True)
+class AppConfig:
+    openai_api_key: str | None
+    openai_model: str
+    ollama_base_url: str
+    ollama_model: str
+    default_temperature: float
+    default_max_tokens: int
+    history_path: Path
