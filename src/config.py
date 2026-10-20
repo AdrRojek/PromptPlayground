@@ -25,3 +25,7 @@ class AppConfig:
     default_temperature: float
     default_max_tokens: int
     history_path: Path
+
+    @property
+    def preferred_provider(self) -> str:
+        return "openai" if self.openai_api_key else "ollama"
