@@ -1,4 +1,4 @@
-"""Shared chat client."""
+"""Shared chat client for OpenAI and Ollama."""
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Literal
@@ -16,3 +16,7 @@ class ChatResult:
 
 class LLMError(Exception):
     """Raised when a provider call fails."""
+
+def chat(provider: Provider, model: str, system: str, user: str,
+         temperature: float = 0.7, max_tokens: int = 1024, **kwargs) -> ChatResult:
+    raise LLMError(f"Provider not implemented: {provider}")
