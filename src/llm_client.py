@@ -24,16 +24,23 @@ def chat(provider, model, system, user, temperature=0.7, max_tokens=1024,
     if provider != "openai":
         raise LLMError(f"Provider not implemented: {provider}")
     if not openai_api_key:
-        raise LLMError("OpenAI API key is missing.")
+        raise LLMError("OpenAI API key is missing. Set OPENAI_API_KEY or enter a key in the sidebar.")
     client = OpenAI(api_key=openai_api_key)
     messages = []
     if system.strip():
         messages.append({"role": "system", "content": system})
     messages.append({"role": "user", "content": user})
     started = time.perf_counter()
-    response = client.chat.completions.create(
-        model=model, messages=messages, temperature=temperature, max_tokens=max_tokens
-    )
+    try:
+        response = client.chat.completions.create(
+            model=model, messages=messages, temperature=temperature, max_tokens=max_tokens
+        )
+    except Exception as exc:
+        raise LLMError(f"OpenAI request failed: {exc}") from exc
     latency_ms = int((time.perf_counter() - started) * 1000)
-    content = (response.choices[0].message.content or "").strip()
-    return ChatResult(content, latency_ms, "openai", model, temperature, {"id": response.id})
+    choice = response.choices[0]
+    content = (choice.message.content or "").strip()
+    return ChatResult(content, latency_ms, "openai", model, temperature, {
+        "id": getattr(response, "id", None),
+        "finish_reason": choice.finish_reason,
+    })
