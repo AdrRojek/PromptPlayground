@@ -156,3 +156,20 @@ def _chat_ollama(
         temperature=temperature,
         raw_meta=raw_meta,
     )
+
+
+def list_ollama_models(base_url: str = "http://localhost:11434") -> list[str]:
+    try:
+        with httpx.Client(timeout=5.0) as client:
+            response = client.get(f"{base_url.rstrip('/')}/api/tags")
+            response.raise_for_status()
+            data = response.json()
+    except Exception:  # noqa: BLE001 - fall back to empty list in UI
+        return []
+
+    models = []
+    for item in data.get("models") or []:
+        name = item.get("name")
+        if name:
+            models.append(name)
+    return models
