@@ -1,6 +1,7 @@
 """Prompt Playground — Streamlit sandbox for testing prompts."""
 import streamlit as st
 from src.config import load_config
+from src.history import append_entry, make_entry
 from src.llm_client import LLMError, chat
 
 st.set_page_config(page_title="Prompt Playground", page_icon="🧪", layout="wide")
@@ -20,18 +21,26 @@ with st.sidebar:
 system_prompt = st.text_area("System prompt", "You are a helpful assistant.", height=120)
 user_prompt = st.text_area("User prompt", "Explain temperature in LLMs in one short paragraph.", height=160)
 
-if st.button("Run", type="primary"):
+if st.button("Run", type="primary", use_container_width=True):
     if not user_prompt.strip():
         st.warning("User prompt is required.")
     else:
-        try:
-            result = chat(
-                provider=provider, model=model, system=system_prompt, user=user_prompt,
-                temperature=float(temperature), max_tokens=int(max_tokens),
-                openai_api_key=openai_key or None, ollama_base_url=ollama_url,
-            )
-            st.subheader("Response")
-            st.markdown(result.content)
-            st.caption(f"{result.latency_ms} ms")
-        except LLMError as exc:
-            st.error(str(exc))
+        with st.spinner("Calling model..."):
+            try:
+                result = chat(
+                    provider=provider, model=model, system=system_prompt, user=user_prompt,
+                    temperature=float(temperature), max_tokens=int(max_tokens),
+                    openai_api_key=openai_key or None, ollama_base_url=ollama_url,
+                )
+            except LLMError as exc:
+                st.error(str(exc))
+            else:
+                st.subheader("Response")
+                st.markdown(result.content)
+                st.caption(f"{result.model} · temp={result.temperature} · {result.latency_ms} ms")
+                append_entry(config.history_path, make_entry(
+                    provider=result.provider, model=result.model, temperature=result.temperature,
+                    max_tokens=int(max_tokens), system_prompt=system_prompt, user_prompt=user_prompt,
+                    response=result.content, latency_ms=result.latency_ms, meta=result.raw_meta,
+                ))
+                st.toast("Saved to history")
