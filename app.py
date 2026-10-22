@@ -1,5 +1,6 @@
 """Prompt Playground — Streamlit sandbox for testing prompts."""
 import streamlit as st
+from src.compare import CompareSettings, run_compare
 from src.config import load_config
 from src.history import append_entry, load_entries, make_entry
 from src.llm_client import LLMError, chat
@@ -17,33 +18,36 @@ with st.sidebar:
     model = st.text_input("Model", value=config.openai_model if provider == "openai" else config.ollama_model)
     temperature = st.slider("Temperature", 0.0, 2.0, float(config.default_temperature), 0.05)
     max_tokens = st.number_input("Max tokens", 16, 8192, int(config.default_max_tokens), 16)
+    mode = st.radio("Mode", ["Single run", "Compare A/B"], horizontal=True)
 
 system_prompt = st.text_area("System prompt", "You are a helpful assistant.", height=120)
 user_prompt = st.text_area("User prompt", "Explain temperature in LLMs in one short paragraph.", height=160)
 
-if st.button("Run", type="primary", use_container_width=True):
-    if not user_prompt.strip():
-        st.warning("User prompt is required.")
-    else:
-        with st.spinner("Calling model..."):
-            try:
-                result = chat(
-                    provider=provider, model=model, system=system_prompt, user=user_prompt,
-                    temperature=float(temperature), max_tokens=int(max_tokens),
-                    openai_api_key=openai_key or None, ollama_base_url=ollama_url,
-                )
-            except LLMError as exc:
-                st.error(str(exc))
-            else:
-                st.subheader("Response")
-                st.markdown(result.content)
-                st.caption(f"{result.model} · temp={result.temperature} · {result.latency_ms} ms")
-                append_entry(config.history_path, make_entry(
-                    provider=result.provider, model=result.model, temperature=result.temperature,
-                    max_tokens=int(max_tokens), system_prompt=system_prompt, user_prompt=user_prompt,
-                    response=result.content, latency_ms=result.latency_ms, meta=result.raw_meta,
-                ))
-                st.toast("Saved to history")
+if mode == "Single run":
+    if st.button("Run", type="primary", use_container_width=True):
+        if not user_prompt.strip():
+            st.warning("User prompt is required.")
+        else:
+            with st.spinner("Calling model..."):
+                try:
+                    result = chat(
+                        provider=provider, model=model, system=system_prompt, user=user_prompt,
+                        temperature=float(temperature), max_tokens=int(max_tokens),
+                        openai_api_key=openai_key or None, ollama_base_url=ollama_url,
+                    )
+                except LLMError as exc:
+                    st.error(str(exc))
+                else:
+                    st.subheader("Response")
+                    st.markdown(result.content)
+                    st.caption(f"{result.model} · temp={result.temperature} · {result.latency_ms} ms")
+                    append_entry(config.history_path, make_entry(
+                        provider=result.provider, model=result.model, temperature=result.temperature,
+                        max_tokens=int(max_tokens), system_prompt=system_prompt, user_prompt=user_prompt,
+                        response=result.content, latency_ms=result.latency_ms, meta=result.raw_meta,
+                    ))
+else:
+    st.info("Compare mode coming next.")
 
 st.divider()
 st.subheader("History")
@@ -57,11 +61,5 @@ if not entries:
     st.info("No runs logged yet.")
 else:
     for entry in entries:
-        title = f"{entry.timestamp} · {entry.provider}/{entry.model} · temp={entry.temperature} · {entry.latency_ms}ms"
-        with st.expander(title):
-            st.markdown("**System**")
-            st.code(entry.system_prompt or "(empty)")
-            st.markdown("**User**")
-            st.code(entry.user_prompt)
-            st.markdown("**Response**")
+        with st.expander(f"{entry.timestamp} · {entry.provider}/{entry.model}"):
             st.markdown(entry.response)
