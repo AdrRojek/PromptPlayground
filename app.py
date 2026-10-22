@@ -47,11 +47,21 @@ if st.button("Run", type="primary", use_container_width=True):
 
 st.divider()
 st.subheader("History")
-entries = load_entries(config.history_path, limit=50)
+filter_provider = st.selectbox("Filter by provider", ["all", "openai", "ollama"])
+entries = load_entries(
+    config.history_path,
+    provider=None if filter_provider == "all" else filter_provider,
+    limit=50,
+)
 if not entries:
     st.info("No runs logged yet.")
 else:
     for entry in entries:
-        with st.expander(f"{entry.timestamp} · {entry.provider}/{entry.model}"):
+        title = f"{entry.timestamp} · {entry.provider}/{entry.model} · temp={entry.temperature} · {entry.latency_ms}ms"
+        with st.expander(title):
+            st.markdown("**System**")
+            st.code(entry.system_prompt or "(empty)")
+            st.markdown("**User**")
             st.code(entry.user_prompt)
+            st.markdown("**Response**")
             st.markdown(entry.response)
