@@ -1,7 +1,7 @@
 """Prompt Playground — Streamlit sandbox for testing prompts."""
 import streamlit as st
 from src.config import load_config
-from src.history import append_entry, make_entry
+from src.history import append_entry, load_entries, make_entry
 from src.llm_client import LLMError, chat
 
 st.set_page_config(page_title="Prompt Playground", page_icon="🧪", layout="wide")
@@ -44,3 +44,14 @@ if st.button("Run", type="primary", use_container_width=True):
                     response=result.content, latency_ms=result.latency_ms, meta=result.raw_meta,
                 ))
                 st.toast("Saved to history")
+
+st.divider()
+st.subheader("History")
+entries = load_entries(config.history_path, limit=50)
+if not entries:
+    st.info("No runs logged yet.")
+else:
+    for entry in entries:
+        with st.expander(f"{entry.timestamp} · {entry.provider}/{entry.model}"):
+            st.code(entry.user_prompt)
+            st.markdown(entry.response)
