@@ -4,3 +4,4 @@
 - Default compare temps to low vs high
 - Show latency next to model metadata
 - Toast on successful history save
+- Widen layout for side-by-side compare
