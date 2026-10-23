@@ -5,3 +5,4 @@
 - Show latency next to model metadata
 - Toast on successful history save
 - Widen layout for side-by-side compare
+- Handle empty Ollama model list gracefully
