@@ -16,3 +16,4 @@
 - Keep system prompt optional for providers
 - Surface finish_reason in OpenAI meta
 - Record eval_count from Ollama responses
+- Use UTC timestamps in history log
