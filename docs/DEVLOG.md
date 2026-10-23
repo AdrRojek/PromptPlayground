@@ -9,3 +9,4 @@
 - Prefer OpenAI when API key is present
 - Strip trailing slash from Ollama base URL
 - Store compare label in history entries
+- Limit history view to fifty recent runs
