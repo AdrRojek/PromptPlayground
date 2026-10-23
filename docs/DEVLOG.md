@@ -7,3 +7,4 @@
 - Widen layout for side-by-side compare
 - Handle empty Ollama model list gracefully
 - Prefer OpenAI when API key is present
+- Strip trailing slash from Ollama base URL
