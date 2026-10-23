@@ -19,3 +19,4 @@
 - Use UTC timestamps in history log
 - Ensure data directory exists on append
 - Skip malformed JSONL history lines
+- Sort history newest first in UI
