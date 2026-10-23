@@ -11,3 +11,4 @@
 - Store compare label in history entries
 - Limit history view to fifty recent runs
 - Ignore IDE project files in gitignore
+- Add egg-info and dist to gitignore
