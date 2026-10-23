@@ -6,3 +6,4 @@
 - Toast on successful history save
 - Widen layout for side-by-side compare
 - Handle empty Ollama model list gracefully
+- Prefer OpenAI when API key is present
