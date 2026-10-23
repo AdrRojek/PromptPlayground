@@ -12,3 +12,4 @@
 - Limit history view to fifty recent runs
 - Ignore IDE project files in gitignore
 - Add egg-info and dist to gitignore
+- Improve empty history empty-state copy
