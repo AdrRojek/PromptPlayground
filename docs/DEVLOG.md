@@ -34,3 +34,4 @@
 - Document ollama pull step in README
 - Mention history path in README
 - Tidy package docstring wording
+- Align default user prompt example
