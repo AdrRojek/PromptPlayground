@@ -25,3 +25,4 @@
 - Clamp temperature slider to 0-2
 - Support o4-mini in OpenAI model list
 - Fall back to configured Ollama model name
+- Pass max tokens into compare settings
