@@ -33,3 +33,4 @@
 - Keep compare outcomes independent
 - Document ollama pull step in README
 - Mention history path in README
+- Tidy package docstring wording
