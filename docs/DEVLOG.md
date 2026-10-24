@@ -26,3 +26,4 @@
 - Support o4-mini in OpenAI model list
 - Fall back to configured Ollama model name
 - Pass max tokens into compare settings
+- Avoid crashing UI on provider errors
