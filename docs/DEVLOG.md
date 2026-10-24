@@ -22,3 +22,4 @@
 - Sort history newest first in UI
 - Add page icon to Streamlit config
 - Normalize max tokens step to 16
+- Clamp temperature slider to 0-2
