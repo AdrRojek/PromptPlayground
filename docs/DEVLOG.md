@@ -28,3 +28,4 @@
 - Pass max tokens into compare settings
 - Avoid crashing UI on provider errors
 - Reload dotenv on config import
+- Freeze AppConfig as immutable dataclass
