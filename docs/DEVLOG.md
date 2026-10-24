@@ -31,3 +31,4 @@
 - Freeze AppConfig as immutable dataclass
 - Export ChatResult from llm client
 - Keep compare outcomes independent
+- Document ollama pull step in README
