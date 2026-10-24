@@ -30,3 +30,4 @@
 - Reload dotenv on config import
 - Freeze AppConfig as immutable dataclass
 - Export ChatResult from llm client
+- Keep compare outcomes independent
