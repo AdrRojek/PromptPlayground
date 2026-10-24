@@ -21,3 +21,4 @@
 - Skip malformed JSONL history lines
 - Sort history newest first in UI
 - Add page icon to Streamlit config
+- Normalize max tokens step to 16
