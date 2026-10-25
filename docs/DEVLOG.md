@@ -38,3 +38,4 @@
 - Use container width for primary buttons
 - Filter history by provider in UI
 - Render system prompt in history expanders
+- Label compare variants A and B
