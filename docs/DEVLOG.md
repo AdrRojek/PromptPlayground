@@ -41,3 +41,4 @@
 - Label compare variants A and B
 - Save both compare legs to history
 - Add spinner while waiting on model
+- Validate user prompt before calling LLM
