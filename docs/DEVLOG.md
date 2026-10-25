@@ -39,3 +39,4 @@
 - Filter history by provider in UI
 - Render system prompt in history expanders
 - Label compare variants A and B
+- Save both compare legs to history
