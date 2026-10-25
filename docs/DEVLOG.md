@@ -40,3 +40,4 @@
 - Render system prompt in history expanders
 - Label compare variants A and B
 - Save both compare legs to history
+- Add spinner while waiting on model
