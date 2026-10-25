@@ -36,3 +36,4 @@
 - Tidy package docstring wording
 - Align default user prompt example
 - Use container width for primary buttons
+- Filter history by provider in UI
